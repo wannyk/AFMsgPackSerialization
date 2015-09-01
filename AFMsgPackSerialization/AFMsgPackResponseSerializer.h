@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "MsgPackSerialization.h"
-#import "AFURLResponseSerialization.h"
+#import "MPMessagePack.h"
+#import "AFNetworking.h"
 
 /**
  `AFMsgPackResponseSerializer` is a subclass of `AFHTTPResponseSerializer` that validates and decodes MsgPack responses.
@@ -32,16 +32,6 @@
  */
 @interface AFMsgPackResponseSerializer : AFHTTPResponseSerializer
 
-/**
- Options for reading the response MsgPack data and creating the Foundation objects. For possible values, see the `MsgPackSerialization` documentation section "MsgPackReadingOptions". `0` by default.
- */
-@property (nonatomic, assign) MsgPackReadingOptions readingOptions;
-
-/**
- Creates and returns a MsgPack response serializer with specified reading options.
-
- @param readingOptions The specified MsgPack reading options.
- */
-+ (instancetype)serializerWithReadingOptions:(MsgPackReadingOptions)readingOptions;
++ (instancetype)serializer;
 
 @end

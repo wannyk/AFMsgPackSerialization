@@ -20,24 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "MsgPackSerialization.h"
-#import "AFURLRequestSerialization.h"
+#import "MPMessagePack.h"
+#import "AFNetworking.h"
 
 /**
  `AFMsgPackRequestSerializer` is a subclass of `AFHTTPRequestSerializer` encodes parameters as a MsgPack form body.
  */
 @interface AFMsgPackRequestSerializer : AFHTTPRequestSerializer
 
-/**
- Options for writing the request MsgPack data from Foundation objects. For possible values, see the `MsgPackSerialization` documentation section "MsgPackWritingOptions". `0` by default.
- */
-@property (nonatomic, assign) MsgPackWritingOptions writingOptions;
-
-/**
- Creates and returns a MsgPack request serializer with specified writing options.
-
- @param writingOptions The specified MsgPack writing options.
- */
-+ (instancetype)serializerWithWritingOptions:(MsgPackWritingOptions)writingOptions;
++ (instancetype)serializer;
 
 @end

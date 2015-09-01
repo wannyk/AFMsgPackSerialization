@@ -25,13 +25,7 @@
 @implementation AFMsgPackResponseSerializer
 
 + (instancetype)serializer {
-    return [self serializerWithReadingOptions:0];
-}
-
-+ (instancetype)serializerWithReadingOptions:(MsgPackReadingOptions)readingOptions {
     AFMsgPackResponseSerializer *serializer = [[self alloc] init];
-    serializer.readingOptions = readingOptions;
-
     return serializer;
 }
 
@@ -41,7 +35,7 @@
         return nil;
     }
 
-    self.acceptableContentTypes = [NSSet setWithObjects:@"application/x-msgpack", nil];
+    self.acceptableContentTypes = [NSSet setWithObjects:@"application/msgpack", nil];
 
     return self;
 }
@@ -56,35 +50,7 @@
         return nil;
     }
 
-    return [MsgPackSerialization MsgPackObjectWithData:data options:self.readingOptions error:error];
-}
-
-#pragma mark - NSCoding
-
-- (id)initWithCoder:(NSCoder *)decoder {
-    self = [super initWithCoder:decoder];
-    if (!self) {
-        return nil;
-    }
-
-    self.readingOptions = (MsgPackReadingOptions)[[decoder decodeObjectForKey:NSStringFromSelector(@selector(readingOptions))] unsignedIntegerValue];
-
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)coder {
-    [super encodeWithCoder:coder];
-
-    [coder encodeObject:@(self.readingOptions) forKey:NSStringFromSelector(@selector(readingOptions))];
-}
-
-#pragma mark - NSCopying
-
-- (id)copyWithZone:(NSZone *)zone {
-    AFMsgPackResponseSerializer *serializer = [[[self class] allocWithZone:zone] init];
-    serializer.readingOptions = self.readingOptions;
-
-    return serializer;
+    return [MPMessagePackReader readData:data error:error];
 }
 
 @end

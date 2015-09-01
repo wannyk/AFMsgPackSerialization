@@ -25,13 +25,7 @@
 @implementation AFMsgPackRequestSerializer
 
 + (instancetype)serializer {
-    return [self serializerWithWritingOptions:0];
-}
-
-+ (instancetype)serializerWithWritingOptions:(MsgPackWritingOptions)writingOptions {
     AFMsgPackRequestSerializer *serializer = [[self alloc] init];
-    serializer.writingOptions = writingOptions;
-
     return serializer;
 }
 
@@ -59,38 +53,10 @@
         return mutableRequest;
     }
 
-    [mutableRequest setValue:@"application/x-msgpack" forHTTPHeaderField:@"Content-Type"];
-    [mutableRequest setHTTPBody:[MsgPackSerialization dataWithMsgPackObject:parameters options:self.writingOptions error:error]];
+    [mutableRequest setValue:@"application/msgpack" forHTTPHeaderField:@"Content-Type"];
+    [mutableRequest setHTTPBody:[MPMessagePackWriter writeObject:parameters error:error]];
 
     return mutableRequest;
-}
-
-#pragma mark - NSSecureCoding
-
-- (id)initWithCoder:(NSCoder *)decoder {
-    self = [super initWithCoder:decoder];
-    if (!self) {
-        return nil;
-    }
-
-    self.writingOptions = (MsgPackWritingOptions)[[decoder decodeObjectOfClass:[NSNumber class] forKey:NSStringFromSelector(@selector(writingOptions))] unsignedIntegerValue];
-
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)coder {
-    [super encodeWithCoder:coder];
-
-    [coder encodeObject:@(self.writingOptions) forKey:NSStringFromSelector(@selector(writingOptions))];
-}
-
-#pragma mark - NSCopying
-
-- (id)copyWithZone:(NSZone *)zone {
-    AFMsgPackRequestSerializer *serializer = [[[self class] allocWithZone:zone] init];
-    serializer.writingOptions = self.writingOptions;
-    
-    return serializer;
 }
 
 @end
